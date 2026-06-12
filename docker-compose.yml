@@ -18,9 +18,11 @@ services:
       - ./.github/workflows:/app/../.github/workflows:ro
       - /var/run/docker.sock:/var/run/docker.sock
       - gh-config:/root/.config/gh
+      - settings-data:/app/data
     environment:
       - GITHUB_REPO=${GITHUB_REPO:-skalmodiya/github-actions-playground}
       - REPO_ROOT=/app/..
+      - SETTINGS_FILE=/app/data/settings.json
     networks:
       - gha-net
     working_dir: /app
@@ -48,3 +50,4 @@ networks:
 volumes:
   runner-work:
   gh-config:
+  settings-data:

@@ -1,6 +1,8 @@
 :root {
   --bg: #0d1117;
   --surface: #161b22;
+  --surface-2: #1c2128;
+  --surface-raised: #21262d;
   --border: #30363d;
   --accent: #238636;
   --accent-hover: #2ea043;
@@ -12,6 +14,15 @@
   --red: #f85149;
   --yellow: #d29922;
   --radius: 8px;
+  --copilot-width: 420px;
+  --transition-lesson: 0.2s;
+  --beginner-fg: #56d364;
+  --beginner-bg: #0d2a0d;
+  --intermediate-fg: #d29922;
+  --intermediate-bg: #1a2a0a;
+  --advanced-fg: #f85149;
+  --advanced-bg: #2a0d0d;
+  --focus-ring: rgba(31, 111, 235, 0.4);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }

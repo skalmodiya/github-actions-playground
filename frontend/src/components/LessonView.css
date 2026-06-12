@@ -1,4 +1,12 @@
-.lesson-view { max-width: 900px; }
+@keyframes lesson-fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.lesson-view {
+  max-width: 900px;
+  animation: lesson-fade-in var(--transition-lesson) ease forwards;
+}
 
 .lesson-head { margin-bottom: 20px; }
 
