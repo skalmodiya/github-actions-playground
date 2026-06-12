@@ -1,0 +1,50 @@
+services:
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - gha-net
+
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./.github/workflows:/app/../.github/workflows:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - gh-config:/root/.config/gh
+    environment:
+      - GITHUB_REPO=${GITHUB_REPO:-skalmodiya/github-actions-playground}
+      - REPO_ROOT=/app/..
+    networks:
+      - gha-net
+    working_dir: /app
+
+  runner:
+    build:
+      context: ./runner
+    environment:
+      - REPO_URL=${RUNNER_REPO_URL:-https://github.com/skalmodiya/github-actions-playground}
+      - RUNNER_TOKEN=${RUNNER_TOKEN:-}
+      - RUNNER_NAME=local-docker-runner
+      - RUNNER_LABELS=self-hosted,local,docker
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - runner-work:/home/runner/_work
+    networks:
+      - gha-net
+    profiles:
+      - runner
+
+networks:
+  gha-net:
+    driver: bridge
+
+volumes:
+  runner-work:
+  gh-config:

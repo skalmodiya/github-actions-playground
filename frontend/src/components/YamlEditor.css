@@ -1,0 +1,65 @@
+.yaml-editor {
+  background: #0d1117;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+}
+
+.yaml-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.yaml-filename {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-family: monospace;
+}
+
+.copy-btn { font-size: 11px; padding: 3px 10px; }
+
+.yaml-body {
+  display: flex;
+  min-height: 200px;
+  max-height: 400px;
+  overflow: auto;
+}
+
+.line-numbers {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 12px 10px 12px 16px;
+  background: #0d1117;
+  border-right: 1px solid var(--border);
+  min-width: 44px;
+  user-select: none;
+}
+
+.line-num {
+  font-size: 12px;
+  line-height: 1.6;
+  color: #404040;
+  font-family: monospace;
+}
+
+.yaml-textarea {
+  flex: 1;
+  background: #0d1117;
+  color: #e6edf3;
+  border: none;
+  outline: none;
+  resize: none;
+  font-size: 12px;
+  line-height: 1.6;
+  padding: 12px 16px;
+  font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  min-width: 0;
+}
+
+.yaml-loading { padding: 20px; color: var(--text-muted); }

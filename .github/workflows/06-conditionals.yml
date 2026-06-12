@@ -1,0 +1,74 @@
+name: "Lesson 06 - Conditionals"
+
+on:
+  workflow_dispatch:
+    inputs:
+      should_fail:
+        description: "Force a failure to see error handling"
+        type: boolean
+        default: false
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      ready: ${{ steps.check.outputs.ready }}
+    steps:
+      - name: Check readiness
+        id: check
+        run: echo "ready=true" >> $GITHUB_OUTPUT
+
+      - name: Optional failure
+        if: inputs.should_fail == true
+        run: exit 1
+
+  on-success:
+    runs-on: ubuntu-latest
+    needs: prepare
+    if: success()
+    steps:
+      - name: Only runs if prepare succeeded
+        run: echo "prepare succeeded — running success path"
+
+  on-failure:
+    runs-on: ubuntu-latest
+    needs: prepare
+    if: failure()
+    steps:
+      - name: Only runs if prepare failed
+        run: echo "prepare failed — running cleanup/notification"
+
+  always-run:
+    runs-on: ubuntu-latest
+    needs: [prepare, on-success, on-failure]
+    if: always()
+    steps:
+      - name: Always executes
+        run: |
+          echo "Status of prepare: ${{ needs.prepare.result }}"
+          echo "Status of on-success: ${{ needs.on-success.result }}"
+          echo "Status of on-failure: ${{ needs.on-failure.result }}"
+
+  condition-examples:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run only on main
+        if: github.ref == 'refs/heads/main'
+        run: echo "This is main branch"
+
+      - name: Run only for specific actor
+        if: github.actor == 'skalmodiya'
+        run: echo "Hello, repo owner!"
+
+      - name: Run if variable is set
+        if: ${{ needs.prepare.outputs.ready == 'true' }}
+        run: echo "Ready flag was true"
+
+      - name: Continue on error
+        continue-on-error: true
+        run: |
+          echo "This might fail..."
+          exit 1
+
+      - name: Still runs after continue-on-error
+        run: echo "I still ran despite the previous step failing"

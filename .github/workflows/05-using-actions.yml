@@ -1,0 +1,45 @@
+name: "Lesson 05 - Using Actions"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  use-community-actions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Show Node version
+        run: node --version
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Show Python version
+        run: python --version
+
+      - name: Get current date (community action)
+        id: date
+        uses: Kaven-Universe/github-action-current-date-time@v1
+        with:
+          format: "YYYY-MM-DD"
+
+      - name: Use the action output
+        run: echo "Today is ${{ steps.date.outputs.time }}"
+
+  use-docker-action:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run a Docker action
+        uses: docker://alpine:3.19
+        with:
+          entrypoint: /bin/sh
+          args: -c "echo Hello from inside Alpine Docker container!"

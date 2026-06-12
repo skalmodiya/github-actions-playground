@@ -1,0 +1,44 @@
+name: "Lesson 07 - Matrix Builds"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-matrix:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18, 20, 22]
+        os: [ubuntu-latest, windows-latest]
+      fail-fast: false
+      max-parallel: 4
+    steps:
+      - name: Show matrix combination
+        run: |
+          echo "Node ${{ matrix.node-version }} on ${{ matrix.os }}"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Verify version
+        run: node --version
+
+  include-exclude:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18, 20, 22]
+        include:
+          - node-version: 22
+            experimental: true
+            extra-flag: "--experimental-vm-modules"
+        exclude:
+          - node-version: 18
+    steps:
+      - name: Check matrix
+        run: |
+          echo "Node: ${{ matrix.node-version }}"
+          echo "Experimental: ${{ matrix.experimental }}"
+          echo "Extra flag: ${{ matrix.extra-flag }}"

@@ -1,0 +1,49 @@
+name: "Lesson 02 - Triggers"
+
+on:
+  workflow_dispatch:
+    inputs:
+      greeting:
+        description: "What to say"
+        required: true
+        default: "Hello"
+        type: string
+      log_level:
+        description: "Log verbosity"
+        required: false
+        default: "info"
+        type: choice
+        options: [info, debug, warning]
+
+  push:
+    branches: [main]
+    paths: ['.github/workflows/02-triggers.yml']
+
+  schedule:
+    - cron: '0 9 * * 1'
+
+jobs:
+  show-trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: What triggered this run?
+        run: |
+          echo "Event name: ${{ github.event_name }}"
+          echo "Ref: ${{ github.ref }}"
+          echo "Actor: ${{ github.actor }}"
+
+      - name: Handle dispatch inputs
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          echo "Greeting: ${{ inputs.greeting }}"
+          echo "Log level: ${{ inputs.log_level }}"
+
+      - name: Handle push event
+        if: github.event_name == 'push'
+        run: |
+          echo "Pushed by: ${{ github.actor }}"
+          echo "Commit: ${{ github.sha }}"
+
+      - name: Handle schedule
+        if: github.event_name == 'schedule'
+        run: echo "This is the scheduled Monday morning run"

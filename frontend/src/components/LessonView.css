@@ -1,0 +1,57 @@
+.lesson-view { max-width: 900px; }
+
+.lesson-head { margin-bottom: 20px; }
+
+.lesson-num { font-size: 11px; font-weight: 600; color: var(--accent-hover); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
+
+.lesson-title { font-size: 26px; font-weight: 700; color: #e6edf3; line-height: 1.2; margin-bottom: 6px; }
+
+.lesson-subtitle { font-size: 15px; color: var(--text-muted); margin-bottom: 12px; }
+
+.concept-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.concept-tag {
+  background: rgba(31,111,235,0.15);
+  color: #58a6ff;
+  border: 1px solid rgba(31,111,235,0.3);
+  border-radius: 20px;
+  font-size: 11px;
+  padding: 2px 10px;
+}
+
+.lesson-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+
+.dispatch-msg { font-size: 13px; color: var(--text-muted); }
+
+.lesson-tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+
+.tab {
+  padding: 8px 14px;
+  background: transparent;
+  color: var(--text-muted);
+  border-radius: 0;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  font-size: 13px;
+}
+
+.tab:hover { color: var(--text); }
+
+.tab.active { color: #58a6ff; border-bottom-color: #58a6ff; }
+
+.learn-tab {}
+
+.description-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+
+.lesson-desc { color: var(--text); line-height: 1.7; margin-bottom: 16px; font-size: 14px; }
+
+.key-points { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+
+.key-points li { display: flex; gap: 10px; }
+
+.kp-bullet { color: var(--accent-hover); font-weight: bold; flex-shrink: 0; }

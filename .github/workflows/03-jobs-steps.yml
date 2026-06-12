@@ -1,0 +1,46 @@
+name: "Lesson 03 - Jobs and Steps"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      build_id: ${{ steps.gen_id.outputs.id }}
+    steps:
+      - name: Generate build ID
+        id: gen_id
+        run: echo "id=build-${{ github.run_number }}" >> $GITHUB_OUTPUT
+
+      - name: Simulate build
+        run: |
+          echo "Building with ID: ${{ steps.gen_id.outputs.id }}"
+          sleep 2
+          echo "Build complete"
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Run tests
+        run: |
+          echo "Testing build: ${{ needs.build.outputs.build_id }}"
+          echo "Tests passed!"
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Lint code
+        run: |
+          echo "Linting in parallel with other jobs..."
+          echo "No lint errors found"
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [build, test, lint]
+    steps:
+      - name: Deploy
+        run: |
+          echo "All checks passed. Deploying ${{ needs.build.outputs.build_id }}"
+          echo "Deployed successfully!"

@@ -1,0 +1,62 @@
+.runner-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+.runner-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: rgba(255,255,255,0.03);
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.runner-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-left: 8px;
+}
+
+.runner-status-label { font-size: 12px; }
+
+.runner-body { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+
+.runner-field { display: flex; flex-direction: column; gap: 4px; }
+
+.runner-field label { font-size: 12px; color: var(--text-muted); }
+
+.runner-field input {
+  background: #0d1117;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  padding: 6px 10px;
+  font-size: 13px;
+  width: 100%;
+}
+
+.runner-field input:focus { outline: none; border-color: var(--blue); }
+
+.runner-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.runner-hint { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+.runner-hint code { background: rgba(255,255,255,0.07); padding: 1px 5px; border-radius: 3px; font-size: 11px; }
+
+.runner-logs {
+  background: #0d1117;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 12px;
+  font-size: 11px;
+  color: #7ee787;
+  max-height: 200px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+}

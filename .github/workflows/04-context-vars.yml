@@ -1,0 +1,56 @@
+name: "Lesson 04 - Context and Variables"
+
+on:
+  workflow_dispatch:
+
+env:
+  GLOBAL_VAR: "I am available in all jobs"
+  APP_VERSION: "1.2.3"
+
+jobs:
+  explore-context:
+    runs-on: ubuntu-latest
+    env:
+      JOB_VAR: "I am job-scoped"
+    steps:
+      - name: GitHub context
+        run: |
+          echo "Repository: ${{ github.repository }}"
+          echo "Owner: ${{ github.repository_owner }}"
+          echo "Branch: ${{ github.ref_name }}"
+          echo "SHA: ${{ github.sha }}"
+          echo "Run ID: ${{ github.run_id }}"
+          echo "Run number: ${{ github.run_number }}"
+          echo "Actor: ${{ github.actor }}"
+          echo "Workflow: ${{ github.workflow }}"
+          echo "Job: ${{ github.job }}"
+
+      - name: Runner context
+        run: |
+          echo "Runner OS: ${{ runner.os }}"
+          echo "Runner arch: ${{ runner.arch }}"
+          echo "Runner temp: ${{ runner.temp }}"
+          echo "Runner tool cache: ${{ runner.tool_cache }}"
+
+      - name: Environment variables
+        run: |
+          echo "Global: $GLOBAL_VAR"
+          echo "Job-level: $JOB_VAR"
+          echo "App version: $APP_VERSION"
+
+      - name: Step-level env
+        env:
+          STEP_VAR: "only in this step"
+        run: echo "Step var: $STEP_VAR"
+
+      - name: Expressions and functions
+        run: |
+          echo "Uppercase: ${{ toUpper('hello') }}"
+          echo "JSON: ${{ toJSON(github) }}"
+          echo "Contains check: ${{ contains(github.ref, 'main') }}"
+
+      - name: Write to GITHUB_ENV (persist between steps)
+        run: echo "DYNAMIC_VALUE=computed-at-runtime" >> $GITHUB_ENV
+
+      - name: Read persisted env
+        run: echo "Dynamic value was: $DYNAMIC_VALUE"

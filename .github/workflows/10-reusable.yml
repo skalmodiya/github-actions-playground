@@ -1,0 +1,70 @@
+name: "Lesson 10 - Reusable Workflows"
+
+on:
+  workflow_dispatch:
+
+  workflow_call:
+    inputs:
+      environment:
+        description: "Target environment"
+        required: true
+        type: string
+      dry_run:
+        description: "Skip actual deployment"
+        required: false
+        type: boolean
+        default: false
+    outputs:
+      deployment_id:
+        description: "The deployment ID"
+        value: ${{ jobs.deploy.outputs.dep_id }}
+    secrets:
+      DEPLOY_TOKEN:
+        required: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate inputs
+        run: |
+          echo "Environment: ${{ inputs.environment || 'direct-run' }}"
+          echo "Dry run: ${{ inputs.dry_run }}"
+          echo "This job can be reused by other workflows"
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: validate
+    outputs:
+      dep_id: ${{ steps.create.outputs.id }}
+    steps:
+      - name: Create deployment
+        id: create
+        run: |
+          DEP_ID="dep-${{ github.run_number }}-${{ inputs.environment || 'default' }}"
+          echo "id=$DEP_ID" >> $GITHUB_OUTPUT
+          echo "Deployment ID: $DEP_ID"
+
+      - name: Deploy (or dry run)
+        run: |
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            echo "DRY RUN: Would deploy to ${{ inputs.environment }}"
+          else
+            echo "Deploying to ${{ inputs.environment || 'default' }}"
+          fi
+
+  notify:
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+      - name: Post deployment summary
+        run: |
+          echo "Deployment complete!"
+          echo "ID: ${{ needs.deploy.outputs.dep_id }}"
+          echo "Summary written to GitHub Actions summary"
+          echo "## Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "| Field | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| ID | ${{ needs.deploy.outputs.dep_id }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Environment | ${{ inputs.environment || 'default' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Dry Run | ${{ inputs.dry_run }} |" >> $GITHUB_STEP_SUMMARY

@@ -1,0 +1,24 @@
+name: "Lesson 01 - Hello World"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  say-hello:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print greeting
+        run: echo "Hello from GitHub Actions!"
+
+      - name: Show runner info
+        run: |
+          echo "Runner OS: ${{ runner.os }}"
+          echo "Runner arch: ${{ runner.arch }}"
+          echo "Workflow: ${{ github.workflow }}"
+          echo "Run number: ${{ github.run_number }}"
+
+      - name: Multi-line script
+        run: |
+          echo "Step 1: Prepare"
+          echo "Step 2: Execute"
+          echo "Step 3: Done"
